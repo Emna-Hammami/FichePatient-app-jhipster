@@ -1,0 +1,17 @@
+{
+  "changelogDate": "20230717193502",
+  "entityTableName": "hopital",
+  "fields": [
+    {
+      "fieldName": "nomHop",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "name": "Hopital",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "no"
+}

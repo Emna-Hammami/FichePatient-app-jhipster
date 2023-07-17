@@ -1,6 +1,5 @@
 package com.fiche.patient;
 
-import com.fiche.patient.FichePatientAppApp;
 import com.fiche.patient.config.AsyncSyncConfiguration;
 import com.fiche.patient.config.EmbeddedSQL;
 import java.lang.annotation.ElementType;

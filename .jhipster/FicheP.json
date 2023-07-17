@@ -1,0 +1,22 @@
+{
+  "changelogDate": "20230717193822",
+  "entityTableName": "fichep",
+  "fields": [
+    {
+      "fieldName": "numDossier",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "nomPatient",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "FicheP",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "no"
+}

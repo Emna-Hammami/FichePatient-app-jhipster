@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="medecin">
+      <h2 data-cy="medecinDetailsHeading"><span jhiTranslate="fichePatientAppApp.medecin.detail.title">Medecin</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ medecin.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.nomMed">Nom Med</span></dt>
+        <dd>
+          <span>{{ medecin.nomMed }}</span>
+        </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.adresse">Adresse</span></dt>
+        <dd>
+          <span>{{ medecin.adresse }}</span>
+        </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.tel">Tel</span></dt>
+        <dd>
+          <span>{{ medecin.tel }}</span>
+        </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.fax">Fax</span></dt>
+        <dd>
+          <span>{{ medecin.fax }}</span>
+        </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.email">Email</span></dt>
+        <dd>
+          <span>{{ medecin.email }}</span>
+        </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.url">Url</span></dt>
+        <dd>
+          <span>{{ medecin.url }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/medecin', medecin.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

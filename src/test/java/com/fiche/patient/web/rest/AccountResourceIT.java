@@ -14,7 +14,6 @@ import com.fiche.patient.security.AuthoritiesConstants;
 import com.fiche.patient.service.UserService;
 import com.fiche.patient.service.dto.AdminUserDTO;
 import com.fiche.patient.service.dto.PasswordChangeDTO;
-import com.fiche.patient.service.dto.UserDTO;
 import com.fiche.patient.web.rest.vm.KeyAndPasswordVM;
 import com.fiche.patient.web.rest.vm.ManagedUserVM;
 import java.time.Instant;

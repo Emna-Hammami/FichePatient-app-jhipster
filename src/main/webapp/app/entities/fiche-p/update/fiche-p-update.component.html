@@ -1,0 +1,83 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-fiche-p-heading" data-cy="FichePCreateUpdateHeading" jhiTranslate="fichePatientAppApp.ficheP.home.createOrEditLabel">
+        Create or edit a Fiche P
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.ficheP.numDossier" for="field_numDossier">Num Dossier</label>
+          <input
+            type="number"
+            class="form-control"
+            name="numDossier"
+            id="field_numDossier"
+            data-cy="numDossier"
+            formControlName="numDossier"
+          />
+          <div *ngIf="editForm.get('numDossier')!.invalid && (editForm.get('numDossier')!.dirty || editForm.get('numDossier')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('numDossier')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('numDossier')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.ficheP.nomPatient" for="field_nomPatient">Nom Patient</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nomPatient"
+            id="field_nomPatient"
+            data-cy="nomPatient"
+            formControlName="nomPatient"
+          />
+          <div *ngIf="editForm.get('nomPatient')!.invalid && (editForm.get('nomPatient')!.dirty || editForm.get('nomPatient')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('nomPatient')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

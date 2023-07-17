@@ -1,0 +1,11 @@
+{
+  "changelogDate": "20230717194332",
+  "entityTableName": "statistique",
+  "fields": [],
+  "name": "Statistique",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "no"
+}
