@@ -22,6 +22,12 @@
         <dd>
           <span>{{ service.description }}</span>
         </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.service.hopital">Hopital</span></dt>
+        <dd>
+          <div *ngIf="service.hopital">
+            <a [routerLink]="['/hopital', service.hopital.id, 'view']">{{ service.hopital.nomHop }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

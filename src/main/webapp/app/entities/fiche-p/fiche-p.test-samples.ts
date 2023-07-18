@@ -1,26 +1,26 @@
 import { IFicheP, NewFicheP } from './fiche-p.model';
 
 export const sampleWithRequiredData: IFicheP = {
-  id: 779,
-  numDossier: 28089,
-  nomPatient: 'yacht',
+  id: 5077,
+  numDossier: 13052,
+  nomPatient: 'Bedfordshire Gasoline',
 };
 
 export const sampleWithPartialData: IFicheP = {
-  id: 13955,
-  numDossier: 2978,
-  nomPatient: 'Buckinghamshire',
+  id: 29981,
+  numDossier: 1370,
+  nomPatient: 'West navigate though',
 };
 
 export const sampleWithFullData: IFicheP = {
-  id: 15157,
-  numDossier: 27072,
-  nomPatient: 'application Folk',
+  id: 22585,
+  numDossier: 27320,
+  nomPatient: 'Intelligent Awesome',
 };
 
 export const sampleWithNewData: NewFicheP = {
-  numDossier: 18576,
-  nomPatient: 'sometimes',
+  numDossier: 1064,
+  nomPatient: 'Martin',
   id: null,
 };
 

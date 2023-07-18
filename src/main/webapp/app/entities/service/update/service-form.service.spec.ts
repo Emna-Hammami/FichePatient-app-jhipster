@@ -22,6 +22,7 @@ describe('Service Form Service', () => {
             id: expect.any(Object),
             nomS: expect.any(Object),
             description: expect.any(Object),
+            hopital: expect.any(Object),
           })
         );
       });
@@ -34,6 +35,7 @@ describe('Service Form Service', () => {
             id: expect.any(Object),
             nomS: expect.any(Object),
             description: expect.any(Object),
+            hopital: expect.any(Object),
           })
         );
       });

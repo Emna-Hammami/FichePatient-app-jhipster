@@ -261,6 +261,8 @@ class HopitalResourceIT {
         Hopital partialUpdatedHopital = new Hopital();
         partialUpdatedHopital.setId(hopital.getId());
 
+        partialUpdatedHopital.nomHop(UPDATED_NOM_HOP);
+
         restHopitalMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedHopital.getId())
@@ -273,7 +275,7 @@ class HopitalResourceIT {
         List<Hopital> hopitalList = hopitalRepository.findAll();
         assertThat(hopitalList).hasSize(databaseSizeBeforeUpdate);
         Hopital testHopital = hopitalList.get(hopitalList.size() - 1);
-        assertThat(testHopital.getNomHop()).isEqualTo(DEFAULT_NOM_HOP);
+        assertThat(testHopital.getNomHop()).isEqualTo(UPDATED_NOM_HOP);
     }
 
     @Test

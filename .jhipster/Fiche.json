@@ -1,0 +1,40 @@
+{
+  "changelogDate": "20230718174018",
+  "entityTableName": "fiche",
+  "fields": [],
+  "name": "Fiche",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "hopital",
+      "relationshipName": "ficheHop",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nomHop",
+      "otherEntityName": "hopital",
+      "relationshipName": "hopital",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nomS",
+      "otherEntityName": "service",
+      "relationshipName": "service",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nomMed",
+      "otherEntityName": "medecin",
+      "relationshipName": "medecin",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "no"
+}

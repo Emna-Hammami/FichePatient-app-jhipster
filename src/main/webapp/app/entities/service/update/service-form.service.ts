@@ -20,6 +20,7 @@ type ServiceFormGroupContent = {
   id: FormControl<IService['id'] | NewService['id']>;
   nomS: FormControl<IService['nomS']>;
   description: FormControl<IService['description']>;
+  hopital: FormControl<IService['hopital']>;
 };
 
 export type ServiceFormGroup = FormGroup<ServiceFormGroupContent>;
@@ -43,6 +44,7 @@ export class ServiceFormService {
         validators: [Validators.required],
       }),
       description: new FormControl(serviceRawValue.description),
+      hopital: new FormControl(serviceRawValue.hopital),
     });
   }
 

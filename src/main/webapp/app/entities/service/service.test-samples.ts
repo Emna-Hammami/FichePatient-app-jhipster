@@ -1,24 +1,24 @@
 import { IService, NewService } from './service.model';
 
 export const sampleWithRequiredData: IService = {
-  id: 8053,
-  nomS: 'Southeast Factors inasmuch',
+  id: 27291,
+  nomS: 'red East',
 };
 
 export const sampleWithPartialData: IService = {
-  id: 7942,
-  nomS: 'transmitter Southwest',
-  description: 'Rap',
+  id: 17418,
+  nomS: 'when',
+  description: 'Beauty',
 };
 
 export const sampleWithFullData: IService = {
-  id: 31419,
-  nomS: 'drive female bellows',
-  description: 'bravely',
+  id: 21714,
+  nomS: 'macerate liberate Iowa',
+  description: 'implementation',
 };
 
 export const sampleWithNewData: NewService = {
-  nomS: 'Coupe whenever deposit',
+  nomS: 'District Ball before',
   id: null,
 };
 

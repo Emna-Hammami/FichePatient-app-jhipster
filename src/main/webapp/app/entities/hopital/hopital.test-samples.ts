@@ -1,22 +1,22 @@
 import { IHopital, NewHopital } from './hopital.model';
 
 export const sampleWithRequiredData: IHopital = {
-  id: 24208,
-  nomHop: 'Bronze Card',
+  id: 3312,
+  nomHop: 'madly',
 };
 
 export const sampleWithPartialData: IHopital = {
-  id: 21935,
-  nomHop: 'excluding',
+  id: 29272,
+  nomHop: 'Northwest Ireland',
 };
 
 export const sampleWithFullData: IHopital = {
-  id: 29050,
-  nomHop: 'Sleek',
+  id: 28896,
+  nomHop: 'Licensed Northeast',
 };
 
 export const sampleWithNewData: NewHopital = {
-  nomHop: 'deliver azure',
+  nomHop: 'protocol however Optimization',
   id: null,
 };
 

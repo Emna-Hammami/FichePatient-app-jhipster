@@ -285,8 +285,6 @@ class FichePResourceIT {
         FicheP partialUpdatedFicheP = new FicheP();
         partialUpdatedFicheP.setId(ficheP.getId());
 
-        partialUpdatedFicheP.numDossier(UPDATED_NUM_DOSSIER).nomPatient(UPDATED_NOM_PATIENT);
-
         restFichePMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedFicheP.getId())
@@ -299,8 +297,8 @@ class FichePResourceIT {
         List<FicheP> fichePList = fichePRepository.findAll();
         assertThat(fichePList).hasSize(databaseSizeBeforeUpdate);
         FicheP testFicheP = fichePList.get(fichePList.size() - 1);
-        assertThat(testFicheP.getNumDossier()).isEqualTo(UPDATED_NUM_DOSSIER);
-        assertThat(testFicheP.getNomPatient()).isEqualTo(UPDATED_NOM_PATIENT);
+        assertThat(testFicheP.getNumDossier()).isEqualTo(DEFAULT_NUM_DOSSIER);
+        assertThat(testFicheP.getNomPatient()).isEqualTo(DEFAULT_NOM_PATIENT);
     }
 
     @Test

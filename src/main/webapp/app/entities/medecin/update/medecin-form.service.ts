@@ -24,6 +24,8 @@ type MedecinFormGroupContent = {
   fax: FormControl<IMedecin['fax']>;
   email: FormControl<IMedecin['email']>;
   url: FormControl<IMedecin['url']>;
+  hopital: FormControl<IMedecin['hopital']>;
+  service: FormControl<IMedecin['service']>;
 };
 
 export type MedecinFormGroup = FormGroup<MedecinFormGroupContent>;
@@ -59,6 +61,8 @@ export class MedecinFormService {
       url: new FormControl(medecinRawValue.url, {
         validators: [Validators.required],
       }),
+      hopital: new FormControl(medecinRawValue.hopital),
+      service: new FormControl(medecinRawValue.service),
     });
   }
 

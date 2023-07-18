@@ -1,5 +1,6 @@
 package com.fiche.patient.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -18,8 +19,6 @@ public class Medecin implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
     private Long id;
 
@@ -45,6 +44,15 @@ public class Medecin implements Serializable {
     @NotNull
     @Column(name = "url", nullable = false)
     private String url;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Hopital hopital;
+
+    @JsonIgnoreProperties(value = { "hopital", "chefService" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private Service service;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -137,6 +145,32 @@ public class Medecin implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Hopital getHopital() {
+        return this.hopital;
+    }
+
+    public void setHopital(Hopital hopital) {
+        this.hopital = hopital;
+    }
+
+    public Medecin hopital(Hopital hopital) {
+        this.setHopital(hopital);
+        return this;
+    }
+
+    public Service getService() {
+        return this.service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public Medecin service(Service service) {
+        this.setService(service);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

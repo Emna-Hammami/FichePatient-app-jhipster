@@ -2,6 +2,7 @@ package com.fiche.patient.web.rest;
 
 import com.fiche.patient.domain.Medecin;
 import com.fiche.patient.repository.MedecinRepository;
+import com.fiche.patient.repository.ServiceRepository;
 import com.fiche.patient.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,8 +42,11 @@ public class MedecinResource {
 
     private final MedecinRepository medecinRepository;
 
-    public MedecinResource(MedecinRepository medecinRepository) {
+    private final ServiceRepository serviceRepository;
+
+    public MedecinResource(MedecinRepository medecinRepository, ServiceRepository serviceRepository) {
         this.medecinRepository = medecinRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     /**
@@ -58,6 +62,11 @@ public class MedecinResource {
         if (medecin.getId() != null) {
             throw new BadRequestAlertException("A new medecin cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (Objects.isNull(medecin.getService())) {
+            throw new BadRequestAlertException("Invalid association value provided", ENTITY_NAME, "null");
+        }
+        Long serviceId = medecin.getService().getId();
+        serviceRepository.findById(serviceId).ifPresent(medecin::service);
         Medecin result = medecinRepository.save(medecin);
         return ResponseEntity
             .created(new URI("/api/medecins/" + result.getId()))
@@ -163,12 +172,22 @@ public class MedecinResource {
      * {@code GET  /medecins} : get all the medecins.
      *
      * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of medecins in body.
      */
     @GetMapping("/medecins")
-    public ResponseEntity<List<Medecin>> getAllMedecins(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<Medecin>> getAllMedecins(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
         log.debug("REST request to get a page of Medecins");
-        Page<Medecin> page = medecinRepository.findAll(pageable);
+        Page<Medecin> page;
+        if (eagerload) {
+            page = medecinRepository.findAllWithEagerRelationships(pageable);
+        } else {
+            page = medecinRepository.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -180,9 +199,10 @@ public class MedecinResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the medecin, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/medecins/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<Medecin> getMedecin(@PathVariable Long id) {
         log.debug("REST request to get Medecin : {}", id);
-        Optional<Medecin> medecin = medecinRepository.findById(id);
+        Optional<Medecin> medecin = medecinRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(medecin);
     }
 

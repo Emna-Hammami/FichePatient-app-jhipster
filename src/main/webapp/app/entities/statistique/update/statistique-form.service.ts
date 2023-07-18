@@ -43,7 +43,7 @@ export class StatistiqueFormService {
   getStatistique(form: StatistiqueFormGroup): IStatistique | NewStatistique {
     if (form.controls.id.disabled) {
       // form.value returns id with null value for FormGroup with only one FormControl
-      //return {};
+      // return {};
     }
     return form.getRawValue() as IStatistique | NewStatistique;
   }

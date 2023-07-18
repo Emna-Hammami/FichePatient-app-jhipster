@@ -1,15 +1,15 @@
 import { IStatistique, NewStatistique } from './statistique.model';
 
 export const sampleWithRequiredData: IStatistique = {
-  id: 12554,
+  id: 21020,
 };
 
 export const sampleWithPartialData: IStatistique = {
-  id: 2238,
+  id: 23176,
 };
 
 export const sampleWithFullData: IStatistique = {
-  id: 12816,
+  id: 11638,
 };
 
 export const sampleWithNewData: NewStatistique = {

@@ -38,6 +38,18 @@
         <dd>
           <span>{{ medecin.url }}</span>
         </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.hopital">Hopital</span></dt>
+        <dd>
+          <div *ngIf="medecin.hopital">
+            <a [routerLink]="['/hopital', medecin.hopital.id, 'view']">{{ medecin.hopital.nomHop }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="fichePatientAppApp.medecin.service">Service</span></dt>
+        <dd>
+          <div *ngIf="medecin.service">
+            <a [routerLink]="['/service', medecin.service.id, 'view']">{{ medecin.service.nomMed }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

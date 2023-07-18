@@ -2,20 +2,29 @@ package com.fiche.patient.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fiche.patient.IntegrationTest;
 import com.fiche.patient.domain.Medecin;
+import com.fiche.patient.domain.Service;
 import com.fiche.patient.repository.MedecinRepository;
+import com.fiche.patient.repository.ServiceRepository;
 import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link MedecinResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class MedecinResourceIT {
@@ -57,6 +67,12 @@ class MedecinResourceIT {
     private MedecinRepository medecinRepository;
 
     @Autowired
+    private ServiceRepository serviceRepository;
+
+    @Mock
+    private MedecinRepository medecinRepositoryMock;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -78,6 +94,16 @@ class MedecinResourceIT {
             .fax(DEFAULT_FAX)
             .email(DEFAULT_EMAIL)
             .url(DEFAULT_URL);
+        // Add required entity
+        Service service;
+        if (TestUtil.findAll(em, Service.class).isEmpty()) {
+            service = ServiceResourceIT.createEntity(em);
+            em.persist(service);
+            em.flush();
+        } else {
+            service = TestUtil.findAll(em, Service.class).get(0);
+        }
+        medecin.setService(service);
         return medecin;
     }
 
@@ -95,6 +121,12 @@ class MedecinResourceIT {
             .fax(UPDATED_FAX)
             .email(UPDATED_EMAIL)
             .url(UPDATED_URL);
+        // Add required entity
+        Service service;
+        service = ServiceResourceIT.createUpdatedEntity(em);
+        em.persist(service);
+        em.flush();
+        medecin.setService(service);
         return medecin;
     }
 
@@ -122,6 +154,9 @@ class MedecinResourceIT {
         assertThat(testMedecin.getFax()).isEqualTo(DEFAULT_FAX);
         assertThat(testMedecin.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testMedecin.getUrl()).isEqualTo(DEFAULT_URL);
+
+        // Validate the id for MapsId, the ids must be same
+        assertThat(testMedecin.getId()).isEqualTo(testMedecin.getService().getId());
     }
 
     @Test
@@ -140,6 +175,41 @@ class MedecinResourceIT {
         // Validate the Medecin in the database
         List<Medecin> medecinList = medecinRepository.findAll();
         assertThat(medecinList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void updateMedecinMapsIdAssociationWithNewId() throws Exception {
+        // Initialize the database
+        medecinRepository.saveAndFlush(medecin);
+        int databaseSizeBeforeCreate = medecinRepository.findAll().size();
+
+        // Load the medecin
+        Medecin updatedMedecin = medecinRepository.findById(medecin.getId()).orElseThrow();
+        assertThat(updatedMedecin).isNotNull();
+        // Disconnect from session so that the updates on updatedMedecin are not directly saved in db
+        em.detach(updatedMedecin);
+
+        // Update the Service with new association value
+        updatedMedecin.setService();
+
+        // Update the entity
+        restMedecinMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedMedecin.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedMedecin))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Medecin in the database
+        List<Medecin> medecinList = medecinRepository.findAll();
+        assertThat(medecinList).hasSize(databaseSizeBeforeCreate);
+        Medecin testMedecin = medecinList.get(medecinList.size() - 1);
+        // Validate the id for MapsId, the ids must be same
+        // Uncomment the following line for assertion. However, please note that there is a known issue and uncommenting will fail the test.
+        // Please look at https://github.com/jhipster/generator-jhipster/issues/9100. You can modify this test as necessary.
+        // assertThat(testMedecin.getId()).isEqualTo(testMedecin.getService().getId());
     }
 
     @Test
@@ -245,6 +315,23 @@ class MedecinResourceIT {
             .andExpect(jsonPath("$.[*].fax").value(hasItem(DEFAULT_FAX)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllMedecinsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(medecinRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restMedecinMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(medecinRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllMedecinsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(medecinRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restMedecinMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(medecinRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -382,7 +469,7 @@ class MedecinResourceIT {
         Medecin partialUpdatedMedecin = new Medecin();
         partialUpdatedMedecin.setId(medecin.getId());
 
-        partialUpdatedMedecin.nomMed(UPDATED_NOM_MED).adresse(UPDATED_ADRESSE).tel(UPDATED_TEL).fax(UPDATED_FAX).email(UPDATED_EMAIL);
+        partialUpdatedMedecin.nomMed(UPDATED_NOM_MED).adresse(UPDATED_ADRESSE).email(UPDATED_EMAIL);
 
         restMedecinMockMvc
             .perform(
@@ -398,8 +485,8 @@ class MedecinResourceIT {
         Medecin testMedecin = medecinList.get(medecinList.size() - 1);
         assertThat(testMedecin.getNomMed()).isEqualTo(UPDATED_NOM_MED);
         assertThat(testMedecin.getAdresse()).isEqualTo(UPDATED_ADRESSE);
-        assertThat(testMedecin.getTel()).isEqualTo(UPDATED_TEL);
-        assertThat(testMedecin.getFax()).isEqualTo(UPDATED_FAX);
+        assertThat(testMedecin.getTel()).isEqualTo(DEFAULT_TEL);
+        assertThat(testMedecin.getFax()).isEqualTo(DEFAULT_FAX);
         assertThat(testMedecin.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testMedecin.getUrl()).isEqualTo(DEFAULT_URL);
     }

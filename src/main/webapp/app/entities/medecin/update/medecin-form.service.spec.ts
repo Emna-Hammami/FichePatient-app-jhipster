@@ -26,6 +26,8 @@ describe('Medecin Form Service', () => {
             fax: expect.any(Object),
             email: expect.any(Object),
             url: expect.any(Object),
+            hopital: expect.any(Object),
+            service: expect.any(Object),
           })
         );
       });
@@ -42,6 +44,8 @@ describe('Medecin Form Service', () => {
             fax: expect.any(Object),
             email: expect.any(Object),
             url: expect.any(Object),
+            hopital: expect.any(Object),
+            service: expect.any(Object),
           })
         );
       });

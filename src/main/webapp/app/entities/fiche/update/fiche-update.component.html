@@ -1,0 +1,94 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-fiche-heading" data-cy="FicheCreateUpdateHeading" jhiTranslate="fichePatientAppApp.fiche.home.createOrEditLabel">
+        Create or edit a Fiche
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.fiche.ficheHop" for="field_ficheHop">Fiche Hop</label>
+          <select
+            class="form-control"
+            id="field_ficheHop"
+            data-cy="ficheHop"
+            name="ficheHop"
+            formControlName="ficheHop"
+            [compareWith]="compareHopital"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="hopitalOption" *ngFor="let hopitalOption of hopitalsSharedCollection">{{ hopitalOption.id }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.fiche.hopital" for="field_hopital">Hopital</label>
+          <select
+            class="form-control"
+            id="field_hopital"
+            data-cy="hopital"
+            name="hopital"
+            formControlName="hopital"
+            [compareWith]="compareHopital"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="hopitalOption" *ngFor="let hopitalOption of hopitalsSharedCollection">{{ hopitalOption.nomHop }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.fiche.service" for="field_service">Service</label>
+          <select
+            class="form-control"
+            id="field_service"
+            data-cy="service"
+            name="service"
+            formControlName="service"
+            [compareWith]="compareService"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="serviceOption" *ngFor="let serviceOption of servicesSharedCollection">{{ serviceOption.nomS }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.fiche.medecin" for="field_medecin">Medecin</label>
+          <select
+            class="form-control"
+            id="field_medecin"
+            data-cy="medecin"
+            name="medecin"
+            formControlName="medecin"
+            [compareWith]="compareMedecin"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="medecinOption" *ngFor="let medecinOption of medecinsSharedCollection">{{ medecinOption.nomMed }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

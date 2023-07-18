@@ -15,7 +15,15 @@
   "name": "Service",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityField": "nomHop",
+      "otherEntityName": "hopital",
+      "relationshipName": "hopital",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
   "searchEngine": "no",
   "service": "no"
 }

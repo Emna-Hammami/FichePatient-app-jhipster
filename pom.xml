@@ -271,6 +271,11 @@
             <artifactId>mariadb</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+    <groupId>org.mariadb.jdbc</groupId>
+    <artifactId>mariadb-java-client</artifactId>
+    <version>3.0.10</version> <!-- Remplacez xxx par la version du pilote MariaDB que vous souhaitez utiliser -->
+</dependency>
     </dependencies>
 
     <build>

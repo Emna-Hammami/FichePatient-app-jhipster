@@ -1,5 +1,6 @@
 package com.fiche.patient.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -29,6 +30,13 @@ public class Service implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Hopital hopital;
+
+    @JsonIgnoreProperties(value = { "hopital", "service" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "service")
+    private Medecin chefService;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -69,6 +77,38 @@ public class Service implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Hopital getHopital() {
+        return this.hopital;
+    }
+
+    public void setHopital(Hopital hopital) {
+        this.hopital = hopital;
+    }
+
+    public Service hopital(Hopital hopital) {
+        this.setHopital(hopital);
+        return this;
+    }
+
+    public Medecin getChefService() {
+        return this.chefService;
+    }
+
+    public void setChefService(Medecin medecin) {
+        if (this.chefService != null) {
+            this.chefService.setService(null);
+        }
+        if (medecin != null) {
+            medecin.setService(this);
+        }
+        this.chefService = medecin;
+    }
+
+    public Service chefService(Medecin medecin) {
+        this.setChefService(medecin);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

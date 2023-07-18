@@ -9,6 +9,8 @@ import { of, Subject, from } from 'rxjs';
 import { ServiceFormService } from './service-form.service';
 import { ServiceService } from '../service/service.service';
 import { IService } from '../service.model';
+import { IHopital } from 'app/entities/hopital/hopital.model';
+import { HopitalService } from 'app/entities/hopital/service/hopital.service';
 
 import { ServiceUpdateComponent } from './service-update.component';
 
@@ -18,6 +20,7 @@ describe('Service Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let serviceFormService: ServiceFormService;
   let serviceService: ServiceService;
+  let hopitalService: HopitalService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,17 +42,43 @@ describe('Service Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     serviceFormService = TestBed.inject(ServiceFormService);
     serviceService = TestBed.inject(ServiceService);
+    hopitalService = TestBed.inject(HopitalService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should update editForm', () => {
+    it('Should call Hopital query and add missing value', () => {
       const service: IService = { id: 456 };
+      const hopital: IHopital = { id: 11867 };
+      service.hopital = hopital;
+
+      const hopitalCollection: IHopital[] = [{ id: 29276 }];
+      jest.spyOn(hopitalService, 'query').mockReturnValue(of(new HttpResponse({ body: hopitalCollection })));
+      const additionalHopitals = [hopital];
+      const expectedCollection: IHopital[] = [...additionalHopitals, ...hopitalCollection];
+      jest.spyOn(hopitalService, 'addHopitalToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ service });
       comp.ngOnInit();
 
+      expect(hopitalService.query).toHaveBeenCalled();
+      expect(hopitalService.addHopitalToCollectionIfMissing).toHaveBeenCalledWith(
+        hopitalCollection,
+        ...additionalHopitals.map(expect.objectContaining)
+      );
+      expect(comp.hopitalsSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should update editForm', () => {
+      const service: IService = { id: 456 };
+      const hopital: IHopital = { id: 2051 };
+      service.hopital = hopital;
+
+      activatedRoute.data = of({ service });
+      comp.ngOnInit();
+
+      expect(comp.hopitalsSharedCollection).toContain(hopital);
       expect(comp.service).toEqual(service);
     });
   });
@@ -119,6 +148,18 @@ describe('Service Management Update Component', () => {
       expect(serviceService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Compare relationships', () => {
+    describe('compareHopital', () => {
+      it('Should forward to hopitalService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(hopitalService, 'compareHopital');
+        comp.compareHopital(entity, entity2);
+        expect(hopitalService.compareHopital).toHaveBeenCalledWith(entity, entity2);
+      });
     });
   });
 });

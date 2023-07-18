@@ -34,6 +34,21 @@
             formControlName="description"
           />
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.service.hopital" for="field_hopital">Hopital</label>
+          <select
+            class="form-control"
+            id="field_hopital"
+            data-cy="hopital"
+            name="hopital"
+            formControlName="hopital"
+            [compareWith]="compareHopital"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="hopitalOption" *ngFor="let hopitalOption of hopitalsSharedCollection">{{ hopitalOption.nomHop }}</option>
+          </select>
+        </div>
       </div>
 
       <div>

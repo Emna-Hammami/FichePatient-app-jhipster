@@ -53,6 +53,7 @@ public class CacheConfiguration {
             createCache(cm, com.fiche.patient.domain.Service.class.getName());
             createCache(cm, com.fiche.patient.domain.FicheP.class.getName());
             createCache(cm, com.fiche.patient.domain.Statistique.class.getName());
+            createCache(cm, com.fiche.patient.domain.Fiche.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

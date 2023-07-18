@@ -35,7 +35,25 @@
   "name": "Medecin",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityField": "nomHop",
+      "otherEntityName": "hopital",
+      "relationshipName": "hopital",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "id": true,
+      "otherEntityField": "nomMed",
+      "otherEntityName": "service",
+      "otherEntityRelationshipName": "ChefService",
+      "ownerSide": true,
+      "relationshipName": "service",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
   "searchEngine": "no",
   "service": "no"
 }

@@ -74,6 +74,36 @@
             </small>
           </div>
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.medecin.hopital" for="field_hopital">Hopital</label>
+          <select
+            class="form-control"
+            id="field_hopital"
+            data-cy="hopital"
+            name="hopital"
+            formControlName="hopital"
+            [compareWith]="compareHopital"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="hopitalOption" *ngFor="let hopitalOption of hopitalsSharedCollection">{{ hopitalOption.nomHop }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="fichePatientAppApp.medecin.service" for="field_service">Service</label>
+          <select
+            class="form-control"
+            id="field_service"
+            data-cy="service"
+            name="service"
+            formControlName="service"
+            [compareWith]="compareService"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="serviceOption" *ngFor="let serviceOption of servicesCollection">{{ serviceOption.nomMed }}</option>
+          </select>
+        </div>
       </div>
 
       <div>
